@@ -21,6 +21,8 @@ class SearchForm(Form):
                ('Transparent', 'Transparent')]
     type_select = SelectField('Select Type:', choices = choices)
 
+    sku_search = StringField('Enter SKU:')
+
 class ProductForm(Form):
     product_choices = [('Shampoo', 'Shampoo'),
                        ('Lotion', 'Lotion'),

@@ -1,4 +1,4 @@
-from flask_table import Table, Col
+from flask_table import Table, Col, LinkCol
 
 class Results(Table):
     id = Col('Id', show=False)
@@ -9,9 +9,10 @@ class Results(Table):
     product = Col('Product')
     best_suited_for = Col('Best suited for')
     container_type = Col('Container type')
-    vendor_name = Col('Vendor name')
+    vendor_name = Col('Vendor name')        
     product_name = Col('Product name')
     ofc = Col('OFC')
     weight = Col('Weight')
     price = Col('Price')
     shape = Col('Shape')
+    dowload_image = LinkCol('Image', 'download', url_kwargs=dict(id='id'))

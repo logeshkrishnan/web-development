@@ -1,15 +1,17 @@
 from app import app
 from db_setup import init_db, db_session
 from forms import SearchForm, ProductForm
-from flask import flash, render_template, request, redirect
-from models import Master
+from flask import flash, render_template, request, redirect, send_file
+from models import Master, FileContents
 from tables import Results
+from io import BytesIO
 
 init_db()
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     search = SearchForm(request.form)
+    print(search)
     if request.method == 'POST':
         return search_results(search)
 
@@ -19,417 +21,10 @@ def index():
 def search_results(search):
     results = []
 
-    if search.data['product_select'] == 'Shampoo':
-        if search.data['shape_select'] == 'Cylinder':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Flat':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Oval':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Curvy':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Square':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Rectangle':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Shampoo'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-
-    elif search.data['product_select'] == 'Lotion':
-        if search.data['shape_select'] == 'Cylinder':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Flat':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Oval':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Curvy':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Square':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Rectangle':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Lotion'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-
-    elif search.data['product_select'] == 'Cream':
-        if search.data['shape_select'] == 'Cylinder':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Flat':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Oval':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Curvy':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Square':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Rectangle':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Cream'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-
-    elif search.data['product_select'] == 'Balm':
-        if search.data['shape_select'] == 'Cylinder':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Flat':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Oval':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Curvy':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Square':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Rectangle':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Balm'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-
-    elif search.data['product_select'] == 'Oil':
-        if search.data['shape_select'] == 'Cylinder':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Flat':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Oval':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Curvy':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Square':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Rectangle':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Oil'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-
-    elif search.data['product_select'] == 'Conditioner':
-        if search.data['shape_select'] == 'Cylinder':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Cylinder'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Flat':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Flat'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Oval':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Oval'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Curvy':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Curvy'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Square':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Square'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-        elif search.data['shape_select'] == 'Rectangle':
-            if search.data['type_select'] == 'Opaque':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Opaque'))
-                results = qry.all()
-            elif search.data['type_select'] == 'Transparent':
-                qry = db_session.query(Master).filter(
-                    Master.product.contains('Conditioner'), Master.shape.contains('Rectangle'),
-                    Master.container_type.contains('Transparent'))
-                results = qry.all()
-
-    else:
-        qry = db_session.query(Master)
-        results = qry.all()
+    qry = db_session.query(Master).filter(
+        Master.product.contains(search.data['product_select']), Master.shape.contains(search.data['shape_select']),
+        Master.container_type.contains(search.data['type_select']))#, Master.SKU.contains())
+    results = qry.all()
 
     if not results:
         flash('No results found!')
@@ -455,6 +50,28 @@ def new_product():
 
     return render_template('new_product.html', form=form)
 
+@app.route('/upload', methods = ['GET', 'POST'])
+def upload():
+
+    if request.method == 'POST':
+        file = request.files['inputFile']
+
+        newFile = FileContents(name = file.filename, data = file.read())
+        db_session.add(newFile)
+        db_session.commit()
+
+        return 'Saved' + file.filename + 'successfully'
+    return render_template('upload.html')
+
+@app.route('/item/<int:id>', methods = ['GET', 'POST'])
+def download(id):
+    qry = db_session.query(FileContents).filter(FileContents.id==id)
+    image = qry.first()
+
+    if image:
+        return send_file(BytesIO(image.data), attachment_filename='image.jpg', as_attachment=True)
+
+#def
 
 def save_changes(product, form, new=False):
 

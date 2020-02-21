@@ -18,3 +18,8 @@ class Master(db.Model):
     weight = db.Column(db.String(255))
     price = db.Column(db.Float())
     shape = db.Column(db.String)
+
+class FileContents(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(300))
+    data = db.Column(db.LargeBinary)
