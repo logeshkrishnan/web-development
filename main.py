@@ -11,11 +11,11 @@ init_db()
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     search = SearchForm(request.form)
-    print(search)
     if request.method == 'POST':
         return search_results(search)
 
     return render_template('index.html', form = search)
+
 
 @app.route('/results')
 def search_results(search):
@@ -23,7 +23,7 @@ def search_results(search):
 
     qry = db_session.query(Master).filter(
         Master.product.contains(search.data['product_select']), Master.shape.contains(search.data['shape_select']),
-        Master.container_type.contains(search.data['type_select']))#, Master.SKU.contains())
+        Master.container_type.contains(search.data['type_select']), Master.SKU.contains(search.data['sku_search']))
     results = qry.all()
 
     if not results:
