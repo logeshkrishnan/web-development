@@ -1,7 +1,7 @@
 <doctype html>
 <head>
 <title>New Product - Packaging Database</title>
-<h2>New Product</h2>
+<h2>Add a New Product</h2>
 <style>
 * {
   box-sizing: border-box;
@@ -45,6 +45,15 @@ input[type=submit]:hover {
   background-color: #45a049;
 }
 
+.button:hover {
+background: #016ABC;
+color: #f2f2f2;
+border: 1px solid #eee;
+border-radius: 20px;
+box-shadow: 5px 5px 5px #eee;
+text-shadow:none;
+}
+
 .container {
   border-radius: 5px;
   background-color: #f2f2f2;
@@ -85,25 +94,26 @@ col2{
 </style>
 </head>
 {% from "_formhelpers.html" import render_field %}
-<form method=post>
+<form method=post action="/new_product" enctype="multipart/form-data">
     <dl>
-        {{ render_field(form.material_of_construction) }}
-        {{ render_field(form.moulding_process) }}
-        {{ render_field(form.neck_type) }}
-        {{ render_field(form.SKU) }}
-        {{ render_field(form.product) }}
-        {{ render_field(form.best_suited_for) }}
-        {{ render_field(form.container_type) }}
+        {{ render_field(form.material_of_construction, required='required') }}
+        {{ render_field(form.moulding_process, required='required') }}
+        {{ render_field(form.neck_type, required='required') }}
+        {{ render_field(form.SKU, required='required') }}
+        {{ render_field(form.product, required='required') }}
+        {{ render_field(form.best_suited_for, required='required') }}
+        {{ render_field(form.container_type, required='required') }}
     </dl>
     <dl>
-        {{ render_field(form.vendor_name) }}
-        {{ render_field(form.product_name) }}
-        {{ render_field(form.ofc) }}
-        {{ render_field(form.weight) }}
-        {{ render_field(form.price) }}
-        {{ render_field(form.shape) }}
+        {{ render_field(form.vendor_name, required='required') }}
+        {{ render_field(form.product_name, required='required') }}
+        {{ render_field(form.ofc, required='required') }}
+        {{ render_field(form.weight, required='required') }}
+        {{ render_field(form.price, required='required') }}
+        {{ render_field(form.shape, required='required') }}
+        <label for="inputFile">Upload Image</label>
+        <input type="file" name="inputFile" required>
+        <p><p>
+        <button type="submit">Submit</button>
     </dl>
-    <p><p>
-    <a href="{{ url_for('.upload') }}"> Upload Image </a>
-    <p><input type=submit value=Submit>
-</form>
+    </form>

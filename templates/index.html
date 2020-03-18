@@ -114,10 +114,10 @@ input[type=submit]:hover {
     <div>
     <form method=post>
       <dl>
-        {{ render_field(form.product_select) }}
-        {{ render_field(form.shape_select) }}
-        {{ render_field(form.type_select) }}
-        {{ render_field(form.sku_search) }}
+        {{ render_field(form.product_select, required='required') }}
+        {{ render_field(form.shape_select, required='required') }}
+        {{ render_field(form.type_select, required='required') }}
+        {{ render_field(form.sku_search, required='required') }}
       <p><input type=submit value=Search>
       </dl>
       <div>

@@ -45,12 +45,16 @@ def new_product():
         # saving new product
         product = Master()
         save_changes(product, form, new=True)
+        file = request.files['inputFile']
+        newFile = FileContents(name = file.filename, data = file.read())
+        db_session.add(newFile)
+        db_session.commit()
         flash('New product added successfully!')
         return redirect('/')
 
     return render_template('new_product.html', form=form)
 
-@app.route('/upload', methods = ['GET', 'POST'])
+'''@app.route('/upload', methods = ['GET', 'POST'])
 def upload():
 
     if request.method == 'POST':
@@ -61,7 +65,7 @@ def upload():
         db_session.commit()
 
         return 'Saved' + file.filename + 'successfully'
-    return render_template('upload.html')
+    return render_template('upload.html')'''
 
 @app.route('/item/<int:id>', methods = ['GET', 'POST'])
 def download(id):
@@ -70,8 +74,6 @@ def download(id):
 
     if image:
         return send_file(BytesIO(image.data), attachment_filename='image.jpg', as_attachment=True)
-
-#def
 
 def save_changes(product, form, new=False):
 
